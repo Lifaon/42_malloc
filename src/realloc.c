@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   realloc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/08 14:29:44 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/08 17:38:55 by mlantonn         ###   ########.fr       */
+/*   Created: 2019/10/08 17:10:44 by mlantonn          #+#    #+#             */
+/*   Updated: 2019/10/08 17:35:20 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
+#include <stddef.h>
 
-# include <stddef.h>
-
-extern void	free(void *ptr);
-extern void	*malloc(size_t size);
-extern void	*realloc(void *ptr, size_t size);
-
-#endif
+void	*realloc(void *ptr, size_t size)
+{
+	(void)ptr;
+	(void)size;
+	return (NULL);
+}

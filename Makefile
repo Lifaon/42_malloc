@@ -6,12 +6,17 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/08 16:07:49 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/08 17:40:28 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			= a.out
+NAME			= libft_malloc_$(HOSTTYPE).so
+LNK_NAME		= libft_malloc.so
 DIR_NAME		= malloc
+
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE	= $(shell uname -m)_$(shell uname -s)
+endif
 
 #----------------------------------- COLOR ------------------------------------#
 
@@ -29,19 +34,21 @@ SRC_DIR			=	src/
 OBJ_DIR			=	obj/
 INC_DIR			=	inc/
 
-SUBDIRS			=	
 OBJ_SUBDIRS		=	$(addprefix $(OBJ_DIR), $(SUBDIRS))
+SUBDIRS			=	
 
 #----------------------------------- FILES ------------------------------------#
 
-INC_FILES		=	malloc.h
 INCS			=	$(addprefix $(INC_DIR), $(INC_FILES))
+INC_FILES		=	malloc.h
 
-SRC_FILES		=	main.c
 SRCS			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
+SRC_FILES		=	malloc.c	\
+					realloc.c	\
+					free.c
 
-OBJ_FILES		=	$(SRC_FILES:.c=.o)
 OBJS			=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
+OBJ_FILES		=	$(SRC_FILES:.c=.o)
 
 #-------------------------------- COMPILATION ---------------------------------#
 
@@ -59,13 +66,17 @@ FLAGS			=	$(CFLAGS) $(IFLAGS) $(LFLAGS)
 
 # compilation rules
 
-all: $(NAME)
+all: $(NAME) $(LNK_NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	@echo "$(CC) $(FLAGS) $(OBJS) -o $(MAG)$(NAME)$(EOC)"
-	@$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(FLAGS) -shared $(OBJS) -o $(NAME)
 
-$(OBJS): $(SRCS) $(INCS)
+$(LNK_NAME):
+	@echo "ln -s $(NAME) $(MAG)$(LNK_NAME)$(EOC)"
+	@ln -s $(NAME) $(LNK_NAME)
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INCS)
 	@echo "$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $(CYA)$@$(EOC)"
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
@@ -86,6 +97,8 @@ clean:
 fclean: clean
 	@echo "$(RED)rm -rf$(EOC) $(NAME) from $(DIR_NAME)"
 	@rm -f $(NAME)
+	@echo "$(RED)rm -rf$(EOC) $(LNK_NAME) from $(DIR_NAME)"
+	@rm -f $(LNK_NAME)
 
 re: fclean all
 
