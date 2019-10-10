@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/10 10:30:21 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/10 16:56:11 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,12 +40,14 @@ SUBDIRS			=
 #----------------------------------- FILES ------------------------------------#
 
 INCS			=	$(addprefix $(INC_DIR), $(INC_FILES))
-INC_FILES		=	malloc.h
+INC_FILES		=	malloc.h	\
+					zone.h
 
 SRCS			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 SRC_FILES		=	malloc.c	\
 					realloc.c	\
-					free.c
+					free.c		\
+					g_data.c	\
 
 OBJS			=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
 OBJ_FILES		=	$(SRC_FILES:.c=.o)
@@ -113,3 +115,9 @@ change_cflag:
 
 test:
 	@gcc main.c -L. -lft_malloc && ./a.out
+
+test_debug:
+	@gcc main.c -L. -lft_malloc -fsanitize=address && ./a.out
+
+cl_test:
+	@rm a.out
