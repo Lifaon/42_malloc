@@ -6,12 +6,12 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/08 17:40:28 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/10 10:30:21 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= libft_malloc_$(HOSTTYPE).so
-LNK_NAME		= libft_malloc.so
+NAME_LNK		= libft_malloc.so
 DIR_NAME		= malloc
 
 ifeq ($(HOSTTYPE),)
@@ -58,23 +58,21 @@ CFLAGS			=	-Wall -Wextra -Werror
 IFLAGS			=	-I$(INC_DIR)
 LFLAGS			=
 
-FLAGS			=	$(CFLAGS) $(IFLAGS) $(LFLAGS)
-
 #----------------------------------- RULES ------------------------------------#
 
 .PHONY: all clean fclean re
 
 # compilation rules
 
-all: $(NAME) $(LNK_NAME)
+all: $(NAME) $(NAME_LNK)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
-	@echo "$(CC) $(FLAGS) $(OBJS) -o $(MAG)$(NAME)$(EOC)"
-	@$(CC) $(FLAGS) -shared $(OBJS) -o $(NAME)
+	@echo "$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -shared $(OBJS) -o $(MAG)$(NAME)$(EOC)"
+	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -shared $(OBJS) -o $(NAME)
 
-$(LNK_NAME):
-	@echo "ln -s $(NAME) $(MAG)$(LNK_NAME)$(EOC)"
-	@ln -s $(NAME) $(LNK_NAME)
+$(NAME_LNK):
+	@echo "ln -s $(NAME) $(MAG)$(NAME_LNK)$(EOC)"
+	@ln -s $(NAME) $(NAME_LNK)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INCS)
 	@echo "$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $(CYA)$@$(EOC)"
@@ -97,8 +95,8 @@ clean:
 fclean: clean
 	@echo "$(RED)rm -rf$(EOC) $(NAME) from $(DIR_NAME)"
 	@rm -f $(NAME)
-	@echo "$(RED)rm -rf$(EOC) $(LNK_NAME) from $(DIR_NAME)"
-	@rm -f $(LNK_NAME)
+	@echo "$(RED)rm -rf$(EOC) $(NAME_LNK) from $(DIR_NAME)"
+	@rm -f $(NAME_LNK)
 
 re: fclean all
 
@@ -110,3 +108,8 @@ re_debug: fclean debug
 
 change_cflag:
 	@$(eval CFLAGS = -fsanitize=address)
+
+# testing rules
+
+test:
+	@gcc main.c -L. -lft_malloc && ./a.out
