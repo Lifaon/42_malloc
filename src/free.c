@@ -6,16 +6,16 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:36:00 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/10 14:44:36 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/11 16:55:47 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
 #include "zone.h"
 
-void	free(void *ptr)
-{
-	if (!ptr)
-		return ;
-	munmap(ptr, g_data.page_size);
-}
+// void	free(void *ptr)
+// {
+// 	if (!ptr)
+// 		return ;
+// 	// munmap(ptr, g_data.page_size);
+// }
