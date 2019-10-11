@@ -19,10 +19,7 @@ int		main(void)
 			str[i][j] = 'a' + i % 26;
 		str[i][26] = '\0';
 	}
-	// printf("%p\n", str);
-	// for (int i = 0; i < 4096; i++)
-	// 	printf("%p\n", str[i]);
 	for (int i = 0; i < 4096; i++)
-		printf("%s\n", str[i]);
+		printf("%p <%s>\n", str[i], str[i]);
 	return (0);
 }

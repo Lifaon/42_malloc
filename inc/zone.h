@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/10 15:40:47 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/11 10:07:48 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,17 @@
 
 # include <stddef.h>
 
+typedef enum		e_kind
+{
+	TINY,
+	SMALL,
+	LARGE
+}					t_kind;
+
 typedef struct		s_zone
 {
 	void			*ptr;
+	t_kind			kind;
 	size_t			size;
 	_Bool			allocated[128];
 	struct s_zone	*next;

@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:49:32 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/10 16:59:03 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/11 10:20:44 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,22 @@ __CONSTRUCTOR	init_data(void)
 	g_data.large = NULL;
 }
 
-__DESTRUCTOR	free_data(void)
+static void		free_zone(t_zone *zone)
 {
 	t_zone	*tmp;
 
-	while (g_data.tiny)
+	while (zone)
 	{
-		tmp = g_data.tiny;
+		tmp = zone;
+		zone = zone->next;
 		munmap(tmp->ptr, tmp->size);
-		g_data.tiny = g_data.tiny->next;
-		munmap(tmp, sizeof(tmp));
-	}
-	while (g_data.small)
-	{
-		tmp = g_data.small;
-		munmap(tmp->ptr, tmp->size);
-		g_data.small = g_data.small->next;
-		munmap(tmp, sizeof(tmp));
-	}
-	while (g_data.large)
-	{
-		tmp = g_data.large;
-		munmap(tmp->ptr, tmp->size);
-		g_data.large = g_data.large->next;
 		munmap(tmp, sizeof(t_zone));
-	}
+	}	
+}
+
+__DESTRUCTOR	free_data(void)
+{
+	free_zone(g_data.tiny);
+	free_zone(g_data.small);
+	free_zone(g_data.large);
 }
