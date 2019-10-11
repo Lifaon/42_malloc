@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:08:34 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/11 10:27:49 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/11 18:20:14 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ void			*malloc(size_t size)
 {
 	if (size == 0)
 		return (NULL);
-	else if (size <= g_data.tiny_size)
+	else if (size <= g_data.tiny_coeff)
 	{
 		if (!g_data.tiny)
 			if (!(g_data.tiny = create_zone(TINY, g_data.tiny_size)))
 				return (NULL);
 		return (allocate_memory(g_data.tiny));
 	}
-	else if (size <= g_data.small_size)
+	else if (size <= g_data.small_coeff)
 	{
 		if (!g_data.small)
 			if (!(g_data.small = create_zone(SMALL, g_data.small_size)))
