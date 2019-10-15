@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:49:32 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/11 10:20:44 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/15 14:06:41 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,20 @@ __CONSTRUCTOR	init_data(void)
 static void		free_zone(t_zone *zone)
 {
 	t_zone	*tmp;
+	t_zone	*next;
 
-	while (zone)
+	if (zone == NULL)
+		return ;
+	next = zone->next;
+	while (!next->is_root)
 	{
-		tmp = zone;
-		zone = zone->next;
+		tmp = next;
+		next = next->next;
 		munmap(tmp->ptr, tmp->size);
 		munmap(tmp, sizeof(t_zone));
-	}	
+	}
+	munmap(zone->ptr, zone->size);
+	munmap(zone, sizeof(t_zone));
 }
 
 __DESTRUCTOR	free_data(void)

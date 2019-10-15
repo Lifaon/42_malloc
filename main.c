@@ -49,8 +49,8 @@ int		large_test(void)
 
 int		main(void)
 {
-	// tiny_test();
-	large_test();
+	tiny_test();
+	// large_test();
 
 	// char	*str;
 	// int		page_size;

@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:08:34 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/11 18:20:14 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/15 14:07:26 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,39 @@
 #include <sys/errno.h>
 #include "zone.h"
 
-#include <stdio.h>
-
-static t_zone	*create_zone(t_kind kind, size_t size)
+static void		*allocate(size_t size)
 {
-	t_zone	*zone;
+	return (mmap(NULL, size, PROT_READ | PROT_WRITE,
+		MAP_ANON | MAP_PRIVATE, -1, 0));
+}
+
+static t_zone	*create_zone(t_zone *zone, t_kind kind, size_t size)
+{
+	t_zone	*new;
 	int		i;
 
-	zone = (t_zone *)mmap(NULL, sizeof(t_zone), PROT_READ | PROT_WRITE,
-		MAP_ANON | MAP_PRIVATE, -1, 0);
-	if (!zone)
+	if (!(new = (t_zone *)allocate(sizeof(t_zone))))
 		return (NULL);
-	zone->ptr = mmap(NULL, size, PROT_READ | PROT_WRITE,
-		MAP_ANON | MAP_PRIVATE, -1, 0);
-	if (!zone->ptr)
+	if (size && !(new->ptr = allocate(size)))
 	{
-		munmap(zone, sizeof(t_zone));
+		munmap(new, sizeof(t_zone));
 		return (NULL);
 	}
-	zone->kind = kind;
-	zone->size = size;
+	new->kind = kind;
+	new->is_root = zone == NULL ? 1 : 0;
+	new->size = size;
 	i = -1;
 	while (i < 128)
-		zone->allocated[i++] = 0;
-	zone->next = NULL;
-	return (zone);
+		new->allocated[i++] = 0;
+	new->areas_left = kind == LARGE ? 1 : 128;
+	new->prev = zone ? zone->prev : new;
+	new->next = zone ? zone : new;
+	if (zone)
+	{
+		zone->prev->next = new;
+		zone->prev = new;
+	}
+	return (new);
 }
 
 static t_zone	*get_next_available_zone(t_zone *zone, int *i)
@@ -47,20 +55,25 @@ static t_zone	*get_next_available_zone(t_zone *zone, int *i)
 	int		limit;
 
 	tmp = zone;
-	limit = tmp->kind == LARGE ? 1 : 128;
-	while (tmp)
+	limit = zone->kind == LARGE ? 1 : 128;
+	while (1)
 	{
-		*i = -1;
-		while (++(*i) < limit)
-			if (!tmp->allocated[*i])
-				return (tmp);
+		if (tmp->areas_left > 0)
+		{
+			*i = -1;
+			while (++(*i) < limit)
+				if (!tmp->allocated[*i])
+					return (tmp);
+		}
 		tmp = tmp->next;
+		if (tmp->is_root)
+			break ;
 	}
 	*i = 0;
 	return (NULL);
 }
 
-static void		*allocate_memory(t_zone *zone)
+static void		*allocate_memory(t_zone *zone, size_t size)
 {
 	t_zone	*tmp;
 	void	*ptr;
@@ -69,14 +82,11 @@ static void		*allocate_memory(t_zone *zone)
 	tmp = get_next_available_zone(zone, &i);
 	if (!tmp)
 	{
-		tmp = zone;
-		while (tmp->next)
-			tmp = tmp->next;
-		if (!(tmp->next = create_zone(tmp->kind, tmp->size)))
+		if (!(tmp = create_zone(zone, zone->kind, size)))
 			return (NULL);
-		tmp = tmp->next;
 	}
 	tmp->allocated[i] = 1;
+	tmp->areas_left--;
 	ptr = tmp->ptr;
 	if (zone->kind == TINY)
 		ptr += g_data.tiny_coeff * i;
@@ -92,19 +102,19 @@ void			*malloc(size_t size)
 	else if (size <= g_data.tiny_coeff)
 	{
 		if (!g_data.tiny)
-			if (!(g_data.tiny = create_zone(TINY, g_data.tiny_size)))
+			if (!(g_data.tiny = create_zone(NULL, TINY, g_data.tiny_size)))
 				return (NULL);
-		return (allocate_memory(g_data.tiny));
+		return (allocate_memory(g_data.tiny, g_data.tiny_size));
 	}
 	else if (size <= g_data.small_coeff)
 	{
 		if (!g_data.small)
-			if (!(g_data.small = create_zone(SMALL, g_data.small_size)))
+			if (!(g_data.small = create_zone(NULL, SMALL, g_data.small_size)))
 				return (NULL);
-		return (allocate_memory(g_data.small));
+		return (allocate_memory(g_data.small, g_data.small_size));
 	}
 	if (!g_data.large)
-		if (!(g_data.large = create_zone(LARGE, size)))
+		if (!(g_data.large = create_zone(NULL, LARGE, size)))
 			return (NULL);
-	return (allocate_memory(g_data.large));
+	return (allocate_memory(g_data.large, size));
 }
