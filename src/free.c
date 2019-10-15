@@ -6,16 +6,14 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:36:00 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 16:14:45 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/15 17:05:12 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
 #include "zone.h"
 
-#include <stdio.h>
-
-static t_zone	*match_ptr(t_zone *zone, void *ptr, int *i)
+t_zone			*match_ptr(t_zone *zone, void *ptr, int *i)
 {
 	t_zone	*tmp;
 	size_t	coeff;
@@ -40,7 +38,7 @@ static t_zone	*match_ptr(t_zone *zone, void *ptr, int *i)
 	return (NULL);
 }
 
-static void		free_area(t_zone *zone, t_zone **g_data_ptr, int i)
+void			free_area(t_zone *zone, t_zone **g_data_ptr, int i)
 {
 	zone->allocated[i] = 0;
 	zone->areas_left++;

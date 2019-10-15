@@ -33,14 +33,14 @@ int		large_test(void)
 
 	for (int i = 0; i < 10; i++)
 	{
-		arr[i] = (char *)malloc(sizeof(char) * 2048 + 1);
+		arr[i] = (char *)malloc(sizeof(char) * (2048 + 1));
 		if (!arr[i])
 			return (1);
 	}
 	for (int i = 0; i < 10; i++)
 	{
 		for (int j = 0; j < 2048; j++)
-			arr[i][j] = 'a' + i % 2048;
+			arr[i][j] = 'a' + i % 26;
 		arr[i][2048] = '\0';
 	}
 	for (int i = 0; i < 10; i++)
@@ -50,10 +50,33 @@ int		large_test(void)
 	return (0);
 }
 
+int		realloc_test(void)
+{
+	char	*str;
+
+	str = (char *)malloc(sizeof(char) * (4095 + 1));
+	if (!str)
+		return (1);
+	for (int i = 0; i < 4095; i++)
+		str[i] = 'a' + i % 26;
+	str[4095] = '\0';
+	printf("malloc: %s\n\n", str);
+	str = realloc(str, 32);
+	printf("realloc: %s\n\n", str);
+	str = realloc(str, sizeof(char) * (16383 + 1));
+	for (int i = 0; i < 16383; i++)
+		str[i] = 'a' + i % 26;
+	str[16383] = '\0';
+	printf("realloc: %s\n\n", str);
+	free(str);
+	return (0);
+}
+
 int		main(void)
 {
 	// tiny_test();
-	large_test();
+	// large_test();
+	realloc_test();
 
 	// char	*str;
 	// int		page_size;
