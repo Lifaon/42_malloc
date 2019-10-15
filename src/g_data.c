@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:49:32 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 17:05:25 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/15 17:57:34 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 #include <unistd.h>
 #include "zone.h"
 
+#include "ft_printf.h"
+
 #define __CONSTRUCTOR	__attribute__((constructor)) static void
 #define __DESTRUCTOR	__attribute__((destructor)) static void
 
 __CONSTRUCTOR	init_data(void)
 {
+	ft_printf("entering malloc __constructor__\n");
 	g_data.page_size = getpagesize();
 	g_data.tiny = NULL;
 	g_data.tiny_size = g_data.page_size;
@@ -50,6 +53,10 @@ static void		free_zone(t_zone *zone)
 
 __DESTRUCTOR	free_data(void)
 {
+	ft_printf("entering malloc __destructor__\n");
+	ft_printf("free remaining (tiny): %p\n", g_data.tiny);
+	ft_printf("free remaining (small): %p\n", g_data.small);
+	ft_printf("free remaining (large): %p\n", g_data.large);
 	free_zone(g_data.tiny);
 	free_zone(g_data.small);
 	free_zone(g_data.large);

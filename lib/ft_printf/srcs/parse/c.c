@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   c.c                                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/08 14:29:44 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 17:26:29 by mlantonn         ###   ########.fr       */
+/*   Created: 2019/02/28 17:42:27 by mlantonn          #+#    #+#             */
+/*   Updated: 2019/03/25 11:32:49 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
+#include "conv.h"
 
-# include <stddef.h>
+void	c(t_param *param)
+{
+	char	c;
+	int		i;
 
-void	free(void *ptr);
-void	*malloc(size_t size);
-void	*realloc(void *ptr, size_t size);
-
-#endif
+	c = (char)va_arg(param->ap, int);
+	i = 1;
+	if (!param->flag.minus && param->width > 1)
+		while (i++ < param->width)
+			add_char_to_buff(param, ' ');
+	add_char_to_buff(param, c);
+	if (param->flag.minus && param->width > 1)
+		while (i++ < param->width)
+			add_char_to_buff(param, ' ');
+}

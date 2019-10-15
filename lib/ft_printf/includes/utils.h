@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/08 14:29:44 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 17:26:29 by mlantonn         ###   ########.fr       */
+/*   Created: 2019/02/21 22:00:00 by mlantonn          #+#    #+#             */
+/*   Updated: 2019/07/23 23:32:27 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
+#ifndef UTILS_H
+# define UTILS_H
 
-# include <stddef.h>
+# include <stdarg.h>
+# include "conv.h"
+# include "parse.h"
+# include "structs.h"
+# include "defines.h"
 
-void	free(void *ptr);
-void	*malloc(size_t size);
-void	*realloc(void *ptr, size_t size);
+void	init_param(t_param *param, const char *fmt);
+void	parse_fmt(t_param *param);
+void	print_fmt(t_param *param);
+void	print_buff(t_param *param);
+void	add_char_to_buff(t_param *param, char c);
+
+void	init_func(t_ptr func[127]);
 
 #endif

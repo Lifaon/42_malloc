@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/15 17:05:33 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/15 17:54:18 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,12 +30,16 @@ EOC				=	\033[0m
 
 #-------------------------------- DIRECTORIES ---------------------------------#
 
-SRC_DIR			=	src/
-OBJ_DIR			=	obj/
-INC_DIR			=	inc/
+SRC_DIR				=	src/
+OBJ_DIR				=	obj/
+INC_DIR				=	inc/
+LIB_DIR				=	lib/
 
-OBJ_SUBDIRS		=	$(addprefix $(OBJ_DIR), $(SUBDIRS))
-SUBDIRS			=	
+OBJ_SUBDIRS			=	$(addprefix $(OBJ_DIR), $(SUBDIRS))
+SUBDIRS				=	
+
+FT_PRINTF_DIR		=	$(LIB_DIR)ft_printf/
+FT_PRINTF_INC_DIR	=	$(FT_PRINTF_DIR)includes/
 
 #----------------------------------- FILES ------------------------------------#
 
@@ -52,13 +56,15 @@ SRC_FILES		=	malloc.c	\
 OBJS			=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
 OBJ_FILES		=	$(SRC_FILES:.c=.o)
 
+FT_PRINTF		=	$(FT_PRINTF_DIR)/libftprintf.a
+
 #-------------------------------- COMPILATION ---------------------------------#
 
 CC				=	gcc
 
 CFLAGS			=	-Wall -Wextra -Werror
-IFLAGS			=	-I$(INC_DIR)
-LFLAGS			=
+IFLAGS			=	-I$(INC_DIR) -I$(FT_PRINTF_INC_DIR)
+LFLAGS			=	-L$(FT_PRINTF_DIR) -lftprintf
 
 #----------------------------------- RULES ------------------------------------#
 
@@ -66,11 +72,11 @@ LFLAGS			=
 
 # compilation rules
 
-all: $(NAME) $(NAME_LNK)
+all: $(FT_PRINTF) $(NAME) $(NAME_LNK)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
-	@echo "$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -shared $(OBJS) -o $(MAG)$(NAME)$(EOC)"
-	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -shared $(OBJS) -o $(NAME)
+	@echo "$(CC) -shared $(CFLAGS) $(IFLAGS) $(LFLAGS) $(OBJS) -o $(MAG)$(NAME)$(EOC)"
+	@$(CC) -shared $(CFLAGS) $(IFLAGS) $(LFLAGS) $(OBJS) -o $(NAME)
 
 $(NAME_LNK):
 	@echo "ln -s $(NAME) $(MAG)$(NAME_LNK)$(EOC)"
@@ -79,6 +85,9 @@ $(NAME_LNK):
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INCS)
 	@echo "$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $(CYA)$@$(EOC)"
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+
+$(FT_PRINTF):
+	@$(MAKE) -C $(FT_PRINTF_DIR)
 
 # mkdir rules
 
@@ -91,10 +100,14 @@ $(OBJ_SUBDIRS):
 # cleaning rules
 
 clean:
+	@$(MAKE) -C $(FT_PRINTF_DIR) clean
 	@echo "$(RED)rm -rf$(EOC) $(OBJ_DIR) from $(DIR_NAME)"
 	@rm -rf $(OBJ_DIR)
 
-fclean: clean
+fclean:
+	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
+	@echo "$(RED)rm -rf$(EOC) $(OBJ_DIR) from $(DIR_NAME)"
+	@rm -rf $(OBJ_DIR)
 	@echo "$(RED)rm -rf$(EOC) $(NAME) from $(DIR_NAME)"
 	@rm -f $(NAME)
 	@echo "$(RED)rm -rf$(EOC) $(NAME_LNK) from $(DIR_NAME)"

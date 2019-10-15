@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/08 14:29:44 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 17:26:29 by mlantonn         ###   ########.fr       */
+/*   Created: 2019/02/28 17:44:10 by mlantonn          #+#    #+#             */
+/*   Updated: 2019/06/12 18:43:34 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
+#ifndef PARSE_H
+# define PARSE_H
 
-# include <stddef.h>
+# include <stdarg.h>
+# include "structs.h"
 
-void	free(void *ptr);
-void	*malloc(size_t size);
-void	*realloc(void *ptr, size_t size);
+void	print_type(t_param *param);
+void	c(t_param *param);
+void	s(t_param *param);
+void	p(t_param *param);
+void	i(t_param *param);
+void	o(t_param *param);
+void	u(t_param *param);
+void	x(t_param *param);
+void	f(t_param *param);
+void	b(t_param *param);
 
 #endif
