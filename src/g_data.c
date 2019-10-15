@@ -6,13 +6,15 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:49:32 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 14:06:41 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/15 16:08:18 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
 #include <unistd.h>
 #include "zone.h"
+
+#include <stdio.h>
 
 #define __CONSTRUCTOR	__attribute__((constructor)) static void
 #define __DESTRUCTOR	__attribute__((destructor)) static void
@@ -34,6 +36,7 @@ static void		free_zone(t_zone *zone)
 	t_zone	*tmp;
 	t_zone	*next;
 
+	printf("free: %p\n", zone);
 	if (zone == NULL)
 		return ;
 	next = zone->next;

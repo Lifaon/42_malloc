@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 14:21:30 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/15 15:09:19 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct		s_zone
 	size_t			size;
 	_Bool			allocated[128];
 	int				areas_left;
+	int				limit;
 	struct s_zone	*prev;
 	struct s_zone	*next;
 }					t_zone;

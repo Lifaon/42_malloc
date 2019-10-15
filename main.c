@@ -6,51 +6,54 @@
 
 int		tiny_test(void)
 {
-	char *str[4096];
+	char *arr[4096];
 
 	for (int i = 0; i < 4096; i++)
 	{
-		str[i] = (char *)malloc(sizeof(char) * 27);
-		if (!str[i])
+		arr[i] = (char *)malloc(sizeof(char) * 27);
+		if (!arr[i])
 			return (1);
 	}
 	for (int i = 0; i < 4096; i++)
 	{
 		for (int j = 0; j < 26; j++)
-			str[i][j] = 'a' + i % 26;
-		str[i][26] = '\0';
+			arr[i][j] = 'a' + i % 26;
+		arr[i][26] = '\0';
 	}
 	for (int i = 0; i < 4096; i++)
-		printf("%p <%s>\n", str[i], str[i]);
+		printf("%p <%s>\n", arr[i], arr[i]);
+	for (int i = 0; i < 4096; i++)
+		free(arr[i]);
 	return (0);
 }
 
 int		large_test(void)
 {
-	char *str[10];
+	char *arr[10];
 
 	for (int i = 0; i < 10; i++)
 	{
-		str[i] = (char *)malloc(sizeof(char) * 511 + 1);
-		if (!str[i])
+		arr[i] = (char *)malloc(sizeof(char) * 2048 + 1);
+		if (!arr[i])
 			return (1);
 	}
 	for (int i = 0; i < 10; i++)
 	{
-		for (int j = 0; j < 511; j++)
-			str[i][j] = 'a' + i % 511;
-		str[i][511] = '\0';
+		for (int j = 0; j < 2048; j++)
+			arr[i][j] = 'a' + i % 2048;
+		arr[i][2048] = '\0';
 	}
 	for (int i = 0; i < 10; i++)
-		printf("%p <%s>\n", str[i], str[i]);
-	return (0);
+		printf("%p <%s>\n", arr[i], arr[i]);
+	for (int i = 0; i < 10; i++)
+		free(arr[i]);
 	return (0);
 }
 
 int		main(void)
 {
-	tiny_test();
-	// large_test();
+	// tiny_test();
+	large_test();
 
 	// char	*str;
 	// int		page_size;

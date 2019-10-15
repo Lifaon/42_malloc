@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:08:34 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 14:07:26 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/15 15:34:42 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,29 @@ static t_zone	*create_zone(t_zone *zone, t_kind kind, size_t size)
 	new->kind = kind;
 	new->is_root = zone == NULL ? 1 : 0;
 	new->size = size;
+	new->limit = kind == LARGE ? 1 : 128;
+	new->areas_left = new->limit;
 	i = -1;
-	while (i < 128)
+	while (i < new->limit)
 		new->allocated[i++] = 0;
-	new->areas_left = kind == LARGE ? 1 : 128;
 	new->prev = zone ? zone->prev : new;
 	new->next = zone ? zone : new;
-	if (zone)
-	{
-		zone->prev->next = new;
-		zone->prev = new;
-	}
+	zone && (zone->prev->next = new);
+	zone && (zone->prev = new);
 	return (new);
 }
 
 static t_zone	*get_next_available_zone(t_zone *zone, int *i)
 {
 	t_zone	*tmp;
-	int		limit;
 
 	tmp = zone;
-	limit = zone->kind == LARGE ? 1 : 128;
 	while (1)
 	{
 		if (tmp->areas_left > 0)
 		{
 			*i = -1;
-			while (++(*i) < limit)
+			while (++(*i) < zone->limit)
 				if (!tmp->allocated[*i])
 					return (tmp);
 		}
