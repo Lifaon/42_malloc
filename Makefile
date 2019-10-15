@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/15 17:54:18 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/15 18:13:06 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,12 @@ OBJ_DIR				=	obj/
 INC_DIR				=	inc/
 LIB_DIR				=	lib/
 
+OBJ_DIRS			=	$(OBJ_DIR) $(OBJ_SUBDIRS)
 OBJ_SUBDIRS			=	$(addprefix $(OBJ_DIR), $(SUBDIRS))
 SUBDIRS				=	
 
 FT_PRINTF_DIR		=	$(LIB_DIR)ft_printf/
-FT_PRINTF_INC_DIR	=	$(FT_PRINTF_DIR)includes/
+FT_PRINTF_INC_DIR	=	$(FT_PRINTF_DIR)inc/
 
 #----------------------------------- FILES ------------------------------------#
 
@@ -74,7 +75,7 @@ LFLAGS			=	-L$(FT_PRINTF_DIR) -lftprintf
 
 all: $(FT_PRINTF) $(NAME) $(NAME_LNK)
 
-$(NAME): $(OBJ_DIR) $(OBJS)
+$(NAME): $(OBJ_DIRS) $(OBJS)
 	@echo "$(CC) -shared $(CFLAGS) $(IFLAGS) $(LFLAGS) $(OBJS) -o $(MAG)$(NAME)$(EOC)"
 	@$(CC) -shared $(CFLAGS) $(IFLAGS) $(LFLAGS) $(OBJS) -o $(NAME)
 
@@ -91,11 +92,8 @@ $(FT_PRINTF):
 
 # mkdir rules
 
-$(OBJ_DIR): $(OBJ_SUBDIRS)
-	@mkdir -p $(OBJ_DIR)
-
-$(OBJ_SUBDIRS):
-	@mkdir -p $(OBJ_SUBDIRS)
+$(OBJ_DIRS):
+	@mkdir -p $(OBJ_DIRS)
 
 # cleaning rules
 
