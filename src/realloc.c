@@ -6,13 +6,11 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:10:44 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 17:05:09 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/16 10:56:12 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/mman.h>
-#include <stddef.h>
-#include "zone.h"
+#include "mymalloc.h"
 
 static void	ft_memcpy(void *dst, void *src, size_t size)
 {
@@ -20,6 +18,8 @@ static void	ft_memcpy(void *dst, void *src, size_t size)
 	unsigned char	*p2;
 	size_t			i;
 
+	if (!dst || !src)
+		return ;
 	p1 = (unsigned char *)dst;
 	p2 = (unsigned char *)src;
 	i = -1;
@@ -39,10 +39,9 @@ void		*realloc(void *ptr, size_t size)
 		zone = match_ptr(g_data.small, ptr, &i);
 	if (!zone)
 		zone = match_ptr(g_data.large, ptr, &i);
+	new = malloc(size);
 	if (!zone)
-		return (NULL);
-	if (!(new = malloc(size)))
-		return (NULL);
+		return (new);
 	ft_memcpy(new, ptr, zone->size < size ? zone->size : size);
 	if (zone->kind == TINY)
 		free_area(zone, &g_data.tiny, i);

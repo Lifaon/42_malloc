@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/15 18:13:06 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/16 10:57:02 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,8 +45,7 @@ FT_PRINTF_INC_DIR	=	$(FT_PRINTF_DIR)inc/
 #----------------------------------- FILES ------------------------------------#
 
 INCS			=	$(addprefix $(INC_DIR), $(INC_FILES))
-INC_FILES		=	malloc.h	\
-					zone.h
+INC_FILES		=	mymalloc.h
 
 SRCS			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 SRC_FILES		=	malloc.c	\

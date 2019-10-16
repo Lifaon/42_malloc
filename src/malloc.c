@@ -6,13 +6,12 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:08:34 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 15:34:42 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/16 10:56:08 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
-#include <sys/errno.h>
-#include "zone.h"
+#include "mymalloc.h"
 
 static void		*allocate(size_t size)
 {

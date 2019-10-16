@@ -6,12 +6,12 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:36:00 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 17:05:12 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/16 10:56:10 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
-#include "zone.h"
+#include "mymalloc.h"
 
 t_zone			*match_ptr(t_zone *zone, void *ptr, int *i)
 {

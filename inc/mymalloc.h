@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   zone.h                                             :+:      :+:    :+:   */
+/*   mymalloc.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/15 17:05:14 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/16 10:56:00 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ZONE_H
-# define ZONE_H
+#ifndef MYMALLOC_H
+# define MYMALLOC_H
 
 # include <stddef.h>
 
@@ -26,13 +26,13 @@ typedef struct		s_zone
 {
 	void			*ptr;
 	t_kind			kind;
-	_Bool			is_root;
 	size_t			size;
 	_Bool			allocated[128];
 	int				areas_left;
 	int				limit;
 	struct s_zone	*prev;
 	struct s_zone	*next;
+	_Bool			is_root;
 }					t_zone;
 
 typedef struct		s_data
@@ -47,7 +47,7 @@ typedef struct		s_data
 	t_zone			*large;
 }					t_data;
 
-t_data	g_data;
+t_data				g_data;
 
 void				*malloc(size_t size);
 void				free(void *ptr);
