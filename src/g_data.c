@@ -6,14 +6,13 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:49:32 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 10:57:51 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/16 11:01:52 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
 #include <unistd.h>
 #include "mymalloc.h"
-#include "ft_printf.h"
 
 #define __CONSTRUCTOR	__attribute__((constructor)) static void
 #define __DESTRUCTOR	__attribute__((destructor)) static void
