@@ -1,29 +1,31 @@
-#include "inc/malloc.h"
-// #include <stdlib.h>
+#include <stdlib.h>
+#include "inc/mymalloc.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/mman.h>
 
 int		tiny_test(void)
 {
-	char *arr[4096];
+	char *arr[4000];
 
-	for (int i = 0; i < 4096; i++)
+	for (int i = 0; i < 4000; i++)
 	{
 		arr[i] = (char *)malloc(sizeof(char) * 27);
 		if (!arr[i])
 			return (1);
 	}
-	for (int i = 0; i < 4096; i++)
+	for (int i = 0; i < 4000; i++)
 	{
 		for (int j = 0; j < 26; j++)
 			arr[i][j] = 'a' + i % 26;
 		arr[i][26] = '\0';
 	}
-	for (int i = 0; i < 4096; i++)
+	for (int i = 0; i < 4000; i++)
 		printf("%p <%s>\n", arr[i], arr[i]);
-	for (int i = 0; i < 4096; i++)
+	show_alloc_mem();
+	for (int i = 0; i < 4000; i++)
 		free(arr[i]);
+	show_alloc_mem();
 	return (0);
 }
 
@@ -43,10 +45,12 @@ int		large_test(void)
 			arr[i][j] = 'a' + i % 26;
 		arr[i][2048] = '\0';
 	}
+	show_alloc_mem();
 	for (int i = 0; i < 10; i++)
 		printf("%p <%s>\n", arr[i], arr[i]);
 	for (int i = 0; i < 10; i++)
 		free(arr[i]);
+	show_alloc_mem();
 	return (0);
 }
 
@@ -60,23 +64,27 @@ int		realloc_test(void)
 	for (int i = 0; i < 4095; i++)
 		str[i] = 'a' + i % 26;
 	str[4095] = '\0';
+	show_alloc_mem();
 	printf("malloc: %s\n\n", str);
 	str = realloc(str, 32);
+	show_alloc_mem();
 	printf("realloc: %s\n\n", str);
 	str = realloc(str, sizeof(char) * (16383 + 1));
 	for (int i = 0; i < 16383; i++)
 		str[i] = 'a' + i % 26;
 	str[16383] = '\0';
+	show_alloc_mem();
 	printf("realloc: %s\n\n", str);
 	free(str);
+	show_alloc_mem();
 	return (0);
 }
 
 int		main(void)
 {
-	// tiny_test();
+	tiny_test();
 	// large_test();
-	realloc_test();
+	// realloc_test();
 
 	// char	*str;
 	// int		page_size;

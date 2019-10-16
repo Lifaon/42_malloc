@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 11:08:22 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/16 11:32:22 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ typedef struct		s_data
 t_data				g_data;
 
 void				*malloc(size_t size);
+void				show_alloc_mem(void);
 
 #endif
