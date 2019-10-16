@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "inc/mymalloc.h"
+#include "inc/malloc.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/mman.h>
