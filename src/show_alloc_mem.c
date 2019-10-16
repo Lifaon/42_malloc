@@ -6,42 +6,39 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 11:03:49 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 12:06:57 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/16 13:12:40 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mymalloc.h"
 #include "ft_printf.h"
 
-static void	show_zone(t_zone *zone, size_t	coeff)
+static void	show_area(t_zone *zone, size_t coeff, int start, int end)
+{
+	ft_printf("  %p - %p : %lu bytes\n",
+		zone->ptr + (coeff * start),
+		zone->ptr + (coeff * end),
+		coeff * (end - start));
+}
+
+static void	show_zone(t_zone *zone, size_t coeff)
 {
 	int	i;
 	int	start;
-	int	at_limit;
 
-	i = -1;
-	start = 0;
+	start = zone->allocated[0] ? 0 : -1;
+	i = 0;
 	while (++i < zone->limit)
 	{
-		at_limit = i == zone->limit - 1;
-		if (!zone->allocated[i] || at_limit)
-		{
-			if (start != -1)
-			{
-				ft_printf("  %p - %p : %lu bytes\n",
-					zone->ptr + (coeff * start),
-					zone->ptr + (coeff * (i + at_limit)),
-					coeff * (i + at_limit - start));
-			}
-		}
+		if (!zone->allocated[i] && start != -1)
+			show_area(zone, coeff, start, i);
 		if (!zone->allocated[i])
 			start = -1;
 		else if (start == -1)
-		{
-			ft_printf("chelou\n");
 			start = i;
-		}
 	}
+	if (zone->allocated[i - 1])
+		show_area(zone, coeff, start, i);
 }
 
 static void	show_whole_zone(t_zone *zone, t_kind kind)
