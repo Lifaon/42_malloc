@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 13:15:39 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/16 13:31:05 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ typedef struct		s_data
 t_data				g_data;
 
 void				*malloc(size_t size);
+
+t_zone				*match_ptr(t_zone *zone, void *ptr, int *i);
+void				free_area(t_zone *zone, t_zone **g_data_ptr, int i);
 
 #endif

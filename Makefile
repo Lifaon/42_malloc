@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/16 11:32:34 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/16 14:59:15 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,9 @@ INC_FILES		=	mymalloc.h			\
 
 SRCS			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 SRC_FILES		=	malloc.c			\
-					free_realloc.c		\
+					realloc.c			\
+					calloc.c			\
+					free.c				\
 					g_data.c			\
 					show_alloc_mem.c	\
 
@@ -124,10 +126,10 @@ change_cflag:
 # testing rules
 
 test:
-	@gcc main.c -L. -lft_malloc && ./a.out
+	@gcc main.c -L. -lft_malloc -Llib/ft_printf -lftprintf && ./a.out
 
 test_debug:
-	@gcc main.c -L. -lft_malloc -fsanitize=address && ./a.out
+	@gcc main.c -L. -lft_malloc -Llib/ft_printf -lftprintf -fsanitize=address && ./a.out
 
 cl_test:
 	@rm a.out
