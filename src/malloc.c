@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:08:34 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/17 11:01:06 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 12:16:21 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void			*malloc(size_t size)
 {
 	void	*ptr;
 
-	if (size == 0)
-		return (NULL);
 	pthread_mutex_lock(&g_mtx.malloc);
+	if (size == 0)
+		size = g_data.tiny_coeff;
 	if (size <= g_data.tiny_coeff)
 		ptr = allocate_memory(&g_data.tiny, TINY, g_data.tiny_size);
 	else if (size <= g_data.small_coeff)
