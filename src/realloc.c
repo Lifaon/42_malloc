@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 13:29:51 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 13:30:21 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 11:18:40 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void			*realloc(void *ptr, size_t size)
 	void	*new;
 	int		i;
 
+	pthread_mutex_lock(&mtx.realloc);
 	i = 0;
 	zone = match_ptr(g_data.tiny, ptr, &i);
 	if (!zone)
@@ -40,14 +41,16 @@ void			*realloc(void *ptr, size_t size)
 	if (!zone)
 		zone = match_ptr(g_data.large, ptr, &i);
 	new = malloc(size);
-	if (!zone)
-		return (new);
-	ft_memcpy(new, ptr, zone->size < size ? zone->size : size);
-	if (zone->kind == TINY)
-		free_area(zone, &g_data.tiny, i);
-	else if (zone->kind == SMALL)
-		free_area(zone, &g_data.small, i);
-	else
-		free_area(zone, &g_data.large, i);
+	if (zone)
+	{
+		ft_memcpy(new, ptr, zone->size < size ? zone->size : size);
+		if (zone->kind == TINY)
+			free_area(zone, &g_data.tiny, i);
+		else if (zone->kind == SMALL)
+			free_area(zone, &g_data.small, i);
+		else
+			free_area(zone, &g_data.large, i);
+	}
+	pthread_mutex_unlock(&mtx.realloc);
 	return (new);
 }

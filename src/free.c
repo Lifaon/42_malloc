@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:36:00 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 13:36:59 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 11:17:32 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,12 @@ void	free(void *ptr)
 
 	if (!ptr)
 		return ;
+	pthread_mutex_lock(&mtx.free);
 	if ((zone = match_ptr(g_data.tiny, ptr, &i)))
 		free_area(zone, &g_data.tiny, i);
 	else if ((zone = match_ptr(g_data.small, ptr, &i)))
 		free_area(zone, &g_data.small, i);
 	else if ((zone = match_ptr(g_data.large, ptr, &i)))
 		free_area(zone, &g_data.large, i);
+	pthread_mutex_unlock(&mtx.free);
 }

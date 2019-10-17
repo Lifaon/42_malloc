@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 11:03:49 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 13:12:40 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 11:21:11 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,10 @@ static void	show_whole_zone(t_zone *zone, t_kind kind)
 
 void		show_alloc_mem(void)
 {
+	pthread_mutex_lock(&mtx.show_alloc_mem);
 	show_whole_zone(g_data.tiny, TINY);
 	show_whole_zone(g_data.small, SMALL);
 	show_whole_zone(g_data.large, LARGE);
 	ft_printf("\n");
+	pthread_mutex_unlock(&mtx.show_alloc_mem);
 }
