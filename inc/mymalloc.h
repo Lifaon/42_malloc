@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 13:31:05 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 10:47:57 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define MYMALLOC_H
 
 # include <stddef.h>
+# include <pthread.h>
+
+# define __CONSTRUCTOR	__attribute__((constructor)) static void
+# define __DESTRUCTOR	__attribute__((destructor)) static void
 
 typedef enum		e_kind
 {
@@ -48,6 +52,17 @@ typedef struct		s_data
 }					t_data;
 
 t_data				g_data;
+
+typedef struct		s_mtx
+{
+	pthread_mutex_t	malloc;
+	pthread_mutex_t	calloc;
+	pthread_mutex_t	realloc;
+	pthread_mutex_t	free;
+	pthread_mutex_t	show_alloc_mem;
+}					t_mtx;
+
+t_mtx				g_mtx;
 
 void				*malloc(size_t size);
 

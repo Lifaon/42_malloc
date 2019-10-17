@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:49:32 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 11:01:52 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 11:02:25 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 #include <unistd.h>
 #include "mymalloc.h"
 
-#define __CONSTRUCTOR	__attribute__((constructor)) static void
-#define __DESTRUCTOR	__attribute__((destructor)) static void
-
-__CONSTRUCTOR	init_data(void)
+__CONSTRUCTOR	init_g_data(void)
 {
 	g_data.page_size = getpagesize();
 	g_data.tiny = NULL;
@@ -48,7 +45,7 @@ static void		free_zone(t_zone *zone)
 	munmap(zone, sizeof(t_zone));
 }
 
-__DESTRUCTOR	free_data(void)
+__DESTRUCTOR	free_g_data(void)
 {
 	free_zone(g_data.tiny);
 	free_zone(g_data.small);

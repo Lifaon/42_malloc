@@ -6,14 +6,14 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:08:34 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/16 10:56:08 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 11:01:06 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
 #include "mymalloc.h"
 
-static void		*allocate(size_t size)
+static void		*ft_mmap(size_t size)
 {
 	return (mmap(NULL, size, PROT_READ | PROT_WRITE,
 		MAP_ANON | MAP_PRIVATE, -1, 0));
@@ -24,9 +24,9 @@ static t_zone	*create_zone(t_zone *zone, t_kind kind, size_t size)
 	t_zone	*new;
 	int		i;
 
-	if (!(new = (t_zone *)allocate(sizeof(t_zone))))
+	if (!(new = (t_zone *)ft_mmap(sizeof(t_zone))))
 		return (NULL);
-	if (size && !(new->ptr = allocate(size)))
+	if (size && !(new->ptr = ft_mmap(size)))
 	{
 		munmap(new, sizeof(t_zone));
 		return (NULL);
@@ -68,21 +68,24 @@ static t_zone	*get_next_available_zone(t_zone *zone, int *i)
 	return (NULL);
 }
 
-static void		*allocate_memory(t_zone *zone, size_t size)
+static void		*allocate_memory(t_zone **g_data_ptr, t_kind kind, size_t size)
 {
-	t_zone	*tmp;
+	t_zone	*zone;
 	void	*ptr;
 	int		i;
 
-	tmp = get_next_available_zone(zone, &i);
-	if (!tmp)
+	if (!*g_data_ptr)
+		if (!(*g_data_ptr = create_zone(NULL, kind, size)))
+			return (NULL);
+	zone = get_next_available_zone(*g_data_ptr, &i);
+	if (!zone)
 	{
-		if (!(tmp = create_zone(zone, zone->kind, size)))
+		if (!(zone = create_zone(zone, kind, size)))
 			return (NULL);
 	}
-	tmp->allocated[i] = 1;
-	tmp->areas_left--;
-	ptr = tmp->ptr;
+	zone->allocated[i] = 1;
+	zone->areas_left--;
+	ptr = zone->ptr;
 	if (zone->kind == TINY)
 		ptr += g_data.tiny_coeff * i;
 	else if (zone->kind == SMALL)
@@ -92,24 +95,17 @@ static void		*allocate_memory(t_zone *zone, size_t size)
 
 void			*malloc(size_t size)
 {
+	void	*ptr;
+
 	if (size == 0)
 		return (NULL);
-	else if (size <= g_data.tiny_coeff)
-	{
-		if (!g_data.tiny)
-			if (!(g_data.tiny = create_zone(NULL, TINY, g_data.tiny_size)))
-				return (NULL);
-		return (allocate_memory(g_data.tiny, g_data.tiny_size));
-	}
+	pthread_mutex_lock(&g_mtx.malloc);
+	if (size <= g_data.tiny_coeff)
+		ptr = allocate_memory(&g_data.tiny, TINY, g_data.tiny_size);
 	else if (size <= g_data.small_coeff)
-	{
-		if (!g_data.small)
-			if (!(g_data.small = create_zone(NULL, SMALL, g_data.small_size)))
-				return (NULL);
-		return (allocate_memory(g_data.small, g_data.small_size));
-	}
-	if (!g_data.large)
-		if (!(g_data.large = create_zone(NULL, LARGE, size)))
-			return (NULL);
-	return (allocate_memory(g_data.large, size));
+		ptr = allocate_memory(&g_data.small, SMALL, g_data.small_size);
+	else
+		ptr = allocate_memory(&g_data.large, LARGE, size);
+	pthread_mutex_unlock(&g_mtx.malloc);
+	return (ptr);
 }

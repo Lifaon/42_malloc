@@ -96,6 +96,7 @@ int		calloc_test(void)
 		arr[i] = i;
 	show_alloc_mem();
 	free(arr);
+	show_alloc_mem();
 	return (0);
 }
 
