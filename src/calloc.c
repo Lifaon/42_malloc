@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 13:31:22 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/17 11:20:37 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 12:07:30 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*calloc(size_t count, size_t size)
 	size_t	total;
 	size_t	i;
 
-	pthread_mutex_lock(&mtx.calloc);
+	pthread_mutex_lock(&g_mtx.calloc);
 	total = count * size;
 	ptr = malloc(total);
 	if (ptr)
@@ -29,6 +29,6 @@ void	*calloc(size_t count, size_t size)
 		while (++i < total)
 			arr[i] = 0;
 	}
-	pthread_mutex_unlock(&mtx.calloc);
+	pthread_mutex_unlock(&g_mtx.calloc);
 	return (ptr);
 }

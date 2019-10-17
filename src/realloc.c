@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 13:29:51 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/17 11:18:40 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 12:07:30 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void			*realloc(void *ptr, size_t size)
 	void	*new;
 	int		i;
 
-	pthread_mutex_lock(&mtx.realloc);
+	pthread_mutex_lock(&g_mtx.realloc);
 	i = 0;
 	zone = match_ptr(g_data.tiny, ptr, &i);
 	if (!zone)
@@ -51,6 +51,6 @@ void			*realloc(void *ptr, size_t size)
 		else
 			free_area(zone, &g_data.large, i);
 	}
-	pthread_mutex_unlock(&mtx.realloc);
+	pthread_mutex_unlock(&g_mtx.realloc);
 	return (new);
 }
