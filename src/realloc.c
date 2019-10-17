@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 13:29:51 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/17 12:07:30 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:21:24 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ void			*realloc(void *ptr, size_t size)
 	int		i;
 
 	pthread_mutex_lock(&g_mtx.realloc);
+	new = NULL;
 	i = 0;
 	zone = match_ptr(g_data.tiny, ptr, &i);
 	if (!zone)
 		zone = match_ptr(g_data.small, ptr, &i);
 	if (!zone)
 		zone = match_ptr(g_data.large, ptr, &i);
-	new = malloc(size);
+	if (zone || ptr == NULL)
+		new = malloc(size);
 	if (zone)
 	{
 		ft_memcpy(new, ptr, zone->size < size ? zone->size : size);
