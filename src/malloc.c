@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:08:34 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/17 12:16:21 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 14:01:39 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,27 +68,23 @@ static t_zone	*get_next_available_zone(t_zone *zone, int *i)
 	return (NULL);
 }
 
-static void		*allocate_memory(t_zone **g_data_ptr, t_kind kind, size_t size)
+static void		*allocate_memory(t_zone **zone, t_kind kind, size_t size)
 {
-	t_zone	*zone;
+	t_zone	*tmp;
 	void	*ptr;
 	int		i;
 
-	if (!*g_data_ptr)
-		if (!(*g_data_ptr = create_zone(NULL, kind, size)))
-			return (NULL);
-	zone = get_next_available_zone(*g_data_ptr, &i);
-	if (!zone)
-	{
-		if (!(zone = create_zone(zone, kind, size)))
-			return (NULL);
-	}
-	zone->allocated[i] = 1;
-	zone->areas_left--;
-	ptr = zone->ptr;
-	if (zone->kind == TINY)
+	if (!*zone && (!(*zone = create_zone(NULL, kind, size))))
+		return (NULL);
+	tmp = get_next_available_zone(*zone, &i);
+	if (!tmp && (!(tmp = create_zone(*zone, kind, size))))
+		return (NULL);
+	tmp->allocated[i] = 1;
+	tmp->areas_left--;
+	ptr = tmp->ptr;
+	if (kind == TINY)
 		ptr += g_data.tiny_coeff * i;
-	else if (zone->kind == SMALL)
+	else if (kind == SMALL)
 		ptr += g_data.small_coeff * i;
 	return (ptr);
 }
@@ -98,8 +94,6 @@ void			*malloc(size_t size)
 	void	*ptr;
 
 	pthread_mutex_lock(&g_mtx.malloc);
-	if (size == 0)
-		size = g_data.tiny_coeff;
 	if (size <= g_data.tiny_coeff)
 		ptr = allocate_memory(&g_data.tiny, TINY, g_data.tiny_size);
 	else if (size <= g_data.small_coeff)
