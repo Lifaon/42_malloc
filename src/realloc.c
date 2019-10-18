@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 13:29:51 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/17 16:59:28 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/18 16:06:55 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void			*realloc(void *ptr, size_t size)
 	{
 		zone_size = zone->size / zone->limit;
 		ft_memcpy(new, ptr, zone_size < size ? zone_size : size);
-		if (zone->kind == TINY)
-			free_area(zone, &g_data.tiny, i);
+		if (zone->kind == LARGE)
+			free_zone(zone, &g_data.large);
 		else if (zone->kind == SMALL)
 			free_area(zone, &g_data.small, i);
 		else
-			free_area(zone, &g_data.large, i);
+			free_area(zone, &g_data.tiny, i);
 	}
 	pthread_mutex_unlock(&g_mtx.realloc);
 	return (new);

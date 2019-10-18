@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:49:32 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/18 14:31:40 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/18 16:07:45 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ __CONSTRUCTOR	init_g_data(void)
 	g_data.large = NULL;
 }
 
-static void		free_zone(t_zone *zone)
+static void		free_whole_zone(t_zone *zone)
 {
 	t_zone	*tmp;
 	t_zone	*next;
@@ -47,7 +47,7 @@ static void		free_zone(t_zone *zone)
 
 __DESTRUCTOR	free_g_data(void)
 {
-	free_zone(g_data.tiny);
-	free_zone(g_data.small);
-	free_zone(g_data.large);
+	free_whole_zone(g_data.tiny);
+	free_whole_zone(g_data.small);
+	free_whole_zone(g_data.large);
 }

@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/17 17:09:06 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/18 15:37:24 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRC_FILES		=	malloc.c			\
 					realloc.c			\
 					calloc.c			\
 					free.c				\
+					match_ptr.c				\
 					g_data.c			\
 					g_mtx.c				\
 					show_alloc_mem.c	\
