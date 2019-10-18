@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/17 12:08:05 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/17 17:09:06 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ SRC_FILES		=	malloc.c			\
 					g_data.c			\
 					g_mtx.c				\
 					show_alloc_mem.c	\
+					hexdump.c	\
 
 OBJS			=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
 OBJ_FILES		=	$(SRC_FILES:.c=.o)

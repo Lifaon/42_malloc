@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 22:00:00 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/06/12 18:42:01 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 16:29:48 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,6 @@ int		ft_sprintf(char *str, const char *fmt, ...)
 	init_param(&param, fmt);
 	param.str = str;
 	va_start(param.ap, fmt);
-	print_fmt(&param);
-	va_end(param.ap);
-	return (param.buff_read);
-}
-
-int		ft_smprintf(char **str, const char *fmt, ...)
-{
-	t_param	param;
-	int		size;
-
-	if (fmt == NULL || str == NULL)
-		return (-1);
-	va_start(param.ap, fmt);
-	size = ft_vdprintf(-1, fmt, param.ap);
-	va_end(param.ap);
-	*str = (char *)malloc(sizeof(char) * (size + 1));
-	if (*str == NULL)
-		return (-1);
-	va_start(param.ap, fmt);
-	init_param(&param, fmt);
-	param.str = *str;
 	print_fmt(&param);
 	va_end(param.ap);
 	return (param.buff_read);

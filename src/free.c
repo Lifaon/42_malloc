@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:36:00 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/17 12:07:30 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 16:59:43 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,16 @@ t_zone	*match_ptr(t_zone *zone, void *ptr, int *i)
 			break ;
 	}
 	return (NULL);
+}
+
+void	match_zone_ptr(t_zone **zone, void *ptr, int *i)
+{
+	*i = 0;
+	*zone = match_ptr(g_data.tiny, ptr, i);
+	if (!(*zone))
+		*zone = match_ptr(g_data.small, ptr, i);
+	if (!(*zone))
+		*zone = match_ptr(g_data.large, ptr, i);
 }
 
 void	free_area(t_zone *zone, t_zone **g_data_ptr, int i)

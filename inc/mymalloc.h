@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/17 10:47:57 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/17 16:52:53 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_mtx				g_mtx;
 void				*malloc(size_t size);
 
 t_zone				*match_ptr(t_zone *zone, void *ptr, int *i);
+void				match_zone_ptr(t_zone **zone, void *ptr, int *i);
 void				free_area(t_zone *zone, t_zone **g_data_ptr, int i);
 
 #endif

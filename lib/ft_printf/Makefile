@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/21 22:00:00 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/15 18:11:19 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/17 16:35:52 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ INC_FILES		=	conv.h \
 SRCS			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 SRC_FILES		=	ft_printf.c \
 					ft_vprintf.c \
+					ft_printf_static.c \
 					buffer.c \
 					init_param.c \
 					parse_fmt.c \

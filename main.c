@@ -100,10 +100,27 @@ int		calloc_test(void)
 	return (0);
 }
 
+int		hexdump_test(void)
+{
+	char	*str;
+
+	str = (char *)malloc(sizeof(char) * (511 + 1));
+	if (!str)
+		return (1);
+	for (int i = 0; i < 511; i++)
+		str[i] = i % 128;
+	str[511] = '\0';
+	hexdump(str);
+	free(str);
+	hexdump(str);
+	return (0);
+}
+
 int		main(void)
 {
 	// tiny_test();
 	// large_test();
 	// realloc_test();
-	calloc_test();
+	// calloc_test();
+	hexdump_test();
 }
