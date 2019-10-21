@@ -6,7 +6,7 @@
 #    By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:55 by mlantonn          #+#    #+#              #
-#    Updated: 2019/10/18 15:37:24 by mlantonn         ###   ########.fr        #
+#    Updated: 2019/10/21 13:11:09 by mlantonn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,11 +52,11 @@ SRC_FILES		=	malloc.c			\
 					realloc.c			\
 					calloc.c			\
 					free.c				\
-					match_ptr.c				\
+					match_ptr.c			\
 					g_data.c			\
 					g_mtx.c				\
 					show_alloc_mem.c	\
-					hexdump.c	\
+					hexdump.c			\
 
 OBJS			=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
 OBJ_FILES		=	$(SRC_FILES:.c=.o)
@@ -116,23 +116,3 @@ fclean:
 	@rm -f $(NAME_LNK)
 
 re: fclean all
-
-# debug rules
-
-debug: change_cflag all
-
-re_debug: fclean debug
-
-change_cflag:
-	@$(eval CFLAGS = -fsanitize=address)
-
-# testing rules
-
-test:
-	@gcc main.c -L. -lft_malloc -Llib/ft_printf -lftprintf && ./a.out
-
-test_debug:
-	@gcc main.c -L. -lft_malloc -Llib/ft_printf -lftprintf -fsanitize=address && ./a.out
-
-cl_test:
-	@rm a.out
