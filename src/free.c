@@ -6,13 +6,12 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:36:00 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/18 16:08:19 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/21 13:14:54 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
 #include "mymalloc.h"
-#include "ft_printf.h"
 
 void	free_zone(t_zone *zone, t_zone **g_data_ptr)
 {
