@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 13:29:51 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/18 16:06:55 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/21 17:51:30 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void		ft_memcpy(void *dst, void *src, size_t size)
 		p1[i] = p2[i];
 }
 
-void			*realloc(void *ptr, size_t size)
+static void		*ft_realloc(void *ptr, size_t size, _Bool is_reallocf)
 {
 	t_zone	*zone;
 	size_t	zone_size;
@@ -39,7 +39,7 @@ void			*realloc(void *ptr, size_t size)
 	match_zone_ptr(&zone, ptr, &i);
 	if (zone || ptr == NULL)
 		new = malloc(size);
-	if (zone)
+	if (zone && (is_reallocf || new))
 	{
 		zone_size = zone->size / zone->limit;
 		ft_memcpy(new, ptr, zone_size < size ? zone_size : size);
@@ -52,4 +52,14 @@ void			*realloc(void *ptr, size_t size)
 	}
 	pthread_mutex_unlock(&g_mtx.realloc);
 	return (new);
+}
+
+void			*reallocf(void *ptr, size_t size)
+{
+	return (ft_realloc(ptr, size, 1));
+}
+
+void			*realloc(void *ptr, size_t size)
+{
+	return (ft_realloc(ptr, size, 0));
 }

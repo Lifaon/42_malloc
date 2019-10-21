@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/18 16:07:21 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/21 17:49:59 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct		s_mtx
 	pthread_mutex_t	realloc;
 	pthread_mutex_t	free;
 	pthread_mutex_t	show_alloc_mem;
+	pthread_mutex_t	hexdump;
 }					t_mtx;
 
 t_mtx				g_mtx;
