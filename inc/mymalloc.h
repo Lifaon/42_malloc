@@ -6,7 +6,7 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:09:52 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/21 17:49:59 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/22 14:28:57 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct		s_zone
 	void			*ptr;
 	t_kind			kind;
 	size_t			size;
-	_Bool			allocated[128];
+	_Bool			allocated[256];
 	int				areas_left;
 	int				limit;
 	struct s_zone	*prev;
@@ -66,6 +66,8 @@ typedef struct		s_mtx
 t_mtx				g_mtx;
 
 void				*malloc(size_t size);
+
+size_t				malloc_good_size(size_t size);
 
 t_zone				*match_ptr(t_zone *zone, void *ptr, int *i);
 void				match_zone_ptr(t_zone **zone, void *ptr, int *i);

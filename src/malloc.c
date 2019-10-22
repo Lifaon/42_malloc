@@ -6,12 +6,13 @@
 /*   By: mlantonn <mlantonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:08:34 by mlantonn          #+#    #+#             */
-/*   Updated: 2019/10/21 18:20:10 by mlantonn         ###   ########.fr       */
+/*   Updated: 2019/10/22 14:31:30 by mlantonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/mman.h>
 #include "mymalloc.h"
+#include "ft_printf.h"
 
 static void		*ft_mmap(size_t size)
 {
@@ -26,8 +27,9 @@ static void		*ft_mmap(size_t size)
 
 static t_zone	*create_zone(t_zone *zone, t_kind kind, size_t size)
 {
-	t_zone	*new;
-	int		i;
+	static int	limits[3] = {256, 128, 1};
+	t_zone		*new;
+	int			i;
 
 	if (!(new = (t_zone *)ft_mmap(sizeof(t_zone))))
 		return (NULL);
@@ -39,7 +41,7 @@ static t_zone	*create_zone(t_zone *zone, t_kind kind, size_t size)
 	new->kind = kind;
 	new->is_root = zone == NULL ? 1 : 0;
 	new->size = size;
-	new->limit = kind == LARGE ? 1 : 128;
+	new->limit = limits[kind];
 	new->areas_left = new->limit;
 	i = -1;
 	while (i < new->limit)
